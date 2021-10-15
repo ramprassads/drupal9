@@ -62,6 +62,11 @@ jobs:
       run: |
         ./vendor/drush/drush/drush cr
 
-#    - name: Run PHPCS
-#      run: |
-#        .vendor/squizlabs/php_codesniffer/bin
+    - name: Run PHPCS
+      run: |
+        BRANCH_NAME=$(echo $GITHUB_REF | grep -oP '(?<=refs\/heads\/).*')
+        echo $BRANCH_NAME
+        rm .gitignore
+        mv .deployignore .gitignore
+        git config --global user.email "ci@company.com"
+        git config --global user.name "Company CI"
