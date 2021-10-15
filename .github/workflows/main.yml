@@ -15,22 +15,58 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
+    name: Build
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    container:
+      image: php:7.3-apache
+      env:
+        NODE_ENV: production
+      ports:
+      - 80
+      volumes:
+      - $GITHUB_WORKSPACE:/var/www/html
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+    - name: Set up container
+      run: |
+        echo "Update package lists."
+        apt-get update
+        echo "Install base packages."
+        apt-get install -y build-essential libssl-dev gnupg libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libicu-dev libxml2-dev vim wget unzip git subversion default-mysql-client
+        echo "Add yarn package repository."
+        curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+        echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+        echo "Update package lists."
+        apt-get update
+        echo "Install NVM."
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+        . ~/.nvm/nvm.sh
+        echo "Install node."
+        nvm install 12.9.0
+        nvm use 12.9.0
+        echo "Install yarn."
+        apt-get install -y yarn
+        echo "Install composer."
+        curl -sS https://getcomposer.org/installer | php 
+        mv composer.phar /usr/local/bin/composer
+        echo "Install PHP extensions."
+        docker-php-ext-install -j$(nproc) iconv intl xml soap opcache pdo pdo_mysql mysqli mbstring
+        docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
+        docker-php-ext-install -j$(nproc) gd
+        pecl install mcrypt-1.0.2
+        docker-php-ext-enable mcrypt
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+    - name: Run yarn install
+      run: |
+        yarn install
+
+    - name: Run yarn build
+      run: |
+        yarn run build --if-present
+
+    - name: Run composer install
+      run: |
+        composer install
