@@ -60,7 +60,7 @@ jobs:
 
     - name: Run Drush
       run: |
-        ./vendor/drush/drush/bin/drush cr
+        ./vendor/drush/drush/drush cr
 
 #    - name: Run PHPCS
 #      run: |
