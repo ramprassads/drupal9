@@ -57,3 +57,11 @@ jobs:
     - name: Run composer install
       run: |
         composer install
+
+    - name: Run Drush
+      run: |
+        ./vendor/drush/drush/bin/drush cr
+
+#    - name: Run PHPCS
+#      run: |
+#        .vendor/squizlabs/php_codesniffer/bin
