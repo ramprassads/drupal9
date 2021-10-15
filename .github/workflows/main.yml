@@ -60,10 +60,6 @@ jobs:
 
     - name: Run Drush
       run: |
-        ./vendor/drush/drush/drush cr
-
-    - name: Run PHPCS
-      run: |
         BRANCH_NAME=$(echo $GITHUB_REF | grep -oP '(?<=refs\/heads\/).*')
         echo $BRANCH_NAME
         rm .gitignore
