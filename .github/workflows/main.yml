@@ -33,9 +33,6 @@ jobs:
         apt-get update
         echo "Install base packages."
         apt-get install -y build-essential libssl-dev gnupg libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libicu-dev libxml2-dev vim wget unzip git subversion default-mysql-client
-        echo "Add yarn package repository."
-        curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-        echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
         echo "Update package lists."
         apt-get update
         echo "Install NVM."
@@ -44,8 +41,6 @@ jobs:
         echo "Install node."
         nvm install 12.9.0
         nvm use 12.9.0
-        echo "Install yarn."
-        apt-get install -y yarn
         echo "Install composer."
         curl -sS https://getcomposer.org/installer | php 
         mv composer.phar /usr/local/bin/composer
@@ -58,14 +53,6 @@ jobs:
 
     - name: Checkout repository
       uses: actions/checkout@v2
-
-    - name: Run yarn install
-      run: |
-        yarn install
-
-    - name: Run yarn build
-      run: |
-        yarn run build --if-present
 
     - name: Run composer install
       run: |
