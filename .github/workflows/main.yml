@@ -58,11 +58,6 @@ jobs:
       run: |
         composer install
 
-    - name: Run Drush
-      run: |
-        BRANCH_NAME=$(echo $GITHUB_REF | grep -oP '(?<=refs\/heads\/).*')
-        echo $BRANCH_NAME
-        rm .gitignore
-        mv .deployignore .gitignore
-        git config --global user.email "ci@company.com"
-        git config --global user.name "Company CI"
+#    - name: Run PHPCS (Work in progress)
+#      run: |
+#        
