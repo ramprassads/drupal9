@@ -58,6 +58,10 @@ jobs:
       run: |
         composer install
 
-#    - name: Run PHPCS (Work in progress)
-#      run: |
-#        
+  phpcs-drupal:
+    name: Drupal coding standards
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: guix77/phpcs-drupal-action@v1.0.0
+                
