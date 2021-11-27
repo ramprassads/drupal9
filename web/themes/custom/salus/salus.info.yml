@@ -1,0 +1,35 @@
+name: salus
+type: theme
+base theme: false
+description: "Salus theme"
+package: Core
+force_export: false
+inherit_layout: false
+scss_support: false
+regions:
+  header: Header
+  navigation: Navigation
+  country_selector: Country selector
+  page_top: "Page Top"
+  highlighted: Highlighted
+  help: Help
+  content: Content
+  sidebar_first: "Sidebar First"
+  sidebar_second: "Sidebar Second"
+  featured-project-owner: Featured project owner
+  up_footer: Up Footer
+  footer: Footer
+  page_bottom: "Page Bottom"
+features:
+  logo: true
+  name: true
+  slogan: true
+  node_user_picture: true
+  comment_user_picture: true
+  comment_user_verification: true
+  favicon: true
+  main_menu: true
+  secondary_menu: true
+core_version_requirement: ^8.8 || ^9
+project: salus
+datestamp: 1469485442
