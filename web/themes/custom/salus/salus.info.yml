@@ -31,4 +31,3 @@ features:
   main_menu: true
   secondary_menu: true
 core_version_requirement: ^8.8 || ^9
-
