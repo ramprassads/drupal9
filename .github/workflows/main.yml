@@ -19,7 +19,7 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     container:
-      image: php:7.3-apache
+      image: php:7.4-apache
       env:
         NODE_ENV: production
       ports:
@@ -53,6 +53,10 @@ jobs:
 
     - name: Checkout repository
       uses: actions/checkout@v2
+
+    - name: Validate composer
+      run: |
+        composer validate
 
     - name: Run composer install
       run: |
