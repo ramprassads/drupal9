@@ -32,7 +32,9 @@ jobs:
         echo "Update package lists."
         apt-get update
         echo "Install base packages."
-        apt-get install -y wget git zip unzip
+        apt-get install -y build-essential libssl-dev gnupg libfreetype6-dev libicu-dev libxml2-dev libonig-dev vim wget git unzip
+        echo "Update package lists."
+        apt-get update
         echo "Install NVM."
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
         . ~/.nvm/nvm.sh
