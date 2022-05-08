@@ -15,22 +15,50 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
+    name: Build
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    container:
+      image: php:7.4-apache
+      env:
+        NODE_ENV: production
+      ports:
+      - 80
+      volumes:
+      - GITHUB_WORKSPACE:/var/www/html
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+    - name: Set up container
+      run: |
+        echo "Update package lists."
+        apt-get update
+        echo "Install base packages."
+        apt-get install -y build-essential libssl-dev gnupg libfreetype6-dev libicu-dev libxml2-dev libonig-dev vim wget git unzip
+        echo "Update package lists."
+        apt-get update
+        echo "Install NVM."
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+        . ~/.nvm/nvm.sh
+        echo "Install node."
+        nvm install 12.9.0
+        nvm use 12.9.0
+        echo "Install composer."
+        curl -sS https://getcomposer.org/installer | php 
+        mv composer.phar /usr/local/bin/composer
+        echo "Install PHP extensions."
+        docker-php-ext-install -j$(nproc) iconv intl xml soap opcache pdo pdo_mysql mysqli mbstring
+        docker-php-ext-install -j$(nproc) gd
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+    - name: Validate composer
+      run: |
+        composer validate
+
+    - name: Run composer install
+      run: |
+        composer install
+
+    - name: Drupal coding standards
+      uses: guix77/phpcs-drupal-action@v1.0.0
+                
