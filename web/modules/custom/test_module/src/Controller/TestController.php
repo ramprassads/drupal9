@@ -7,7 +7,7 @@ use Drupal\Core\Controller\ControllerBase;
 /**
  * Provides a Test contoller.
  */
-class TestController extends ControllerBase{
+class TestController extends ControllerBase {
 
   /**
    * {@inheritdoc}
