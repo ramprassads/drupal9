@@ -19,14 +19,14 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
+    - name: Setup PHP with composer v2
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+        tools: composer:v2
+
     - name: Checkout repository
       uses: actions/checkout@v2
-
-    - name: Install dependencies
-      uses: php-actions/composer@v6
-      with:
-        php_version: "7.4"
-        version: 2.x
 
     - name: Validate composer
       run: |
