@@ -61,4 +61,5 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
           script: |
-            pwd
+            cd ${{ secrets.TARGET_DIR }}
+            composer install
