@@ -40,6 +40,8 @@ jobs:
       uses: guix77/phpcs-drupal-action@v1.0.0
   deploy:
     name: Deploy to EC2
+    needs: [build]
+    if: always() && (needs.build.result == 'success')
     runs-on: ubuntu-latest
 
     steps:
