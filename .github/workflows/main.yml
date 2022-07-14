@@ -32,10 +32,6 @@ jobs:
       run: |
         composer validate
 
-#    - name: Run composer install
-#      run: |
-#        composer install
-
     - name: Drupal coding standards
       uses: guix77/phpcs-drupal-action@v1.0.0
   deploy:
