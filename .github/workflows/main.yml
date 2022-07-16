@@ -60,7 +60,7 @@ jobs:
           port: 22
           script: |
             cd ${{ secrets.TARGET_DIR }}
-            composer install
+            COMPOSER_PROCESS_TIMEOUT=2000 composer install
             ./vendor/drush/drush/drush cr
             ./vendor/drush/drush/drush updb -y
             ./vendor/drush/drush/drush cim
