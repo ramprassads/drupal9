@@ -772,9 +772,9 @@ $settings['migrate_node_migrate_type_classic'] = FALSE;
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
 $databases['default']['default'] = array (
-  'database' => 'drupal91',
+  'database' => 'drupal9',
   'username' => 'debian-sys-maint',
-  'password' => 'vxImRmHVJSpwkp56',
+  'password' => 'WUzm3z6fy0xqz3TL',
   'prefix' => '',
   'host' => 'localhost',
   'port' => '3306',
