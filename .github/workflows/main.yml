@@ -6,7 +6,7 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
+    branches: [ dev ]
   pull_request:
     branches: [ main ]
 
@@ -32,10 +32,36 @@ jobs:
       run: |
         composer validate
 
-    - name: Run composer install
-      run: |
-        composer install
-
     - name: Drupal coding standards
       uses: guix77/phpcs-drupal-action@v1.0.0
-                
+  deploy:
+    name: Deploy to EC2
+    needs: [build]
+    if: always() && (needs.build.result == 'success')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the files
+        uses: actions/checkout@v2
+
+      - name: Deploy to EC2 instance
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          REMOTE_HOST: ${{ secrets.HOST_DNS }}
+          REMOTE_USER: ${{ secrets.USERNAME }}
+          TARGET: ${{ secrets.TARGET_DIR }}
+      - name: Post Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_DNS }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          script: |
+            cd ${{ secrets.TARGET_DIR }}
+            COMPOSER_PROCESS_TIMEOUT=2000 composer install
+            ./vendor/drush/drush/drush cr
+            ./vendor/drush/drush/drush updb -y
+            ./vendor/drush/drush/drush cim
+            echo ${{ secrets.HOST_DNS }}
