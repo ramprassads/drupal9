@@ -64,3 +64,4 @@ jobs:
             ./vendor/drush/drush/drush cr
             ./vendor/drush/drush/drush updb -y
             ./vendor/drush/drush/drush cim
+            echo ${{ secrets.HOST_DNS }}
